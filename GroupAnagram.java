@@ -5,18 +5,15 @@ public class GroupAnagram
 {
     public static void main(String args[])
 	{
-		List<List<String>> list = solve
+		List<List<String>> list = solve3
 		(new String[]{"eat","tea","tan","ate","nat","bat"});
 		
 		for(int i=0;i<list.size();i++)
 			out.println(list.get(i));
 	}
-	
-	
-	
-	
-	
+
 	// O(n^2) Solution
+	// it is giving best time complexity
 	
 	static List<List<String>> solve(String str[])
 	{
@@ -35,11 +32,9 @@ public class GroupAnagram
 		for(int i=0;i<n; i++)
 		{
 		   List<String> tempList = new ArrayList<>();
-		   boolean check = false;
 		   if(!str[i].equals("0"))	
 		   {
 			   tempList.add(str[i]);
-			   check = true;
 			   str[i] = "0";
 		   }
 		   else 
@@ -56,12 +51,73 @@ public class GroupAnagram
 				}
 		   }
 		   
-		   if(check)
-			   list.add(tempList);
+	       list.add(tempList);
 		}
 		
 		return list;
 	}
+	
+// O(n^2) but not bettr than above
+	
+static List<List<String>> solve3(String str[])
+ {
+	List<List<String>> list = new ArrayList<List<String>>();
+	int n = str.length;
+
+    for(int i=0; i<n; i++)
+	{
+		List<String>  tempList = new ArrayList<>();
+        String temp = str[i];
+		
+		if(!temp.equals("0"))
+		{
+		  tempList.add(temp);
+		  str[i] = "0";
+		}
+		else
+			continue;
+			
+		for(int j=i+1; j<n;j++)
+		{
+			if(!str[j].equals("0") && isAnagram(temp, str[j]))
+			{
+			  tempList.add(str[j]);
+			  str[j] = "0";
+			}
+		}
+		
+		list.add(tempList);
+	}
+	return list;
+ }
+ 
+ 
+ static boolean isAnagram(String s, String p)
+  { 
+	   int m = s.length();
+	   int n = p.length();
+	   
+	   if(m!=n)
+		   return false;
+	   
+	   int sCount[] = new int[256];
+	   int pCount[] = new int[256];
+	   
+	   for(int i=0; i<m; i++)
+	   {
+		   sCount[s.charAt(i)]++;
+		   pCount[p.charAt(i)]++;
+	   }
+	   
+	  for(int i=0; i<256; i++)
+	  {
+		  if(sCount[i] != pCount[i])
+			  return false;
+	  }
+	  return true;
+   }
+	
+	
 	
 	// O(n^3) solution
 

@@ -46,30 +46,33 @@ public class TrappingRainWater
         int l[] = new int[n];
         int r[] = new int[n];
         
-        int max = A[0];
-        
+        int l_max = A[0];
+        int r_max = A[n-1];
+		
 		for(int i=1; i<n; i++)
         {
-            if(max < A[i])
+             if(l_max < A[i])
             {
-                l[i] = max;
-                max = A[i];
+                l[i] = l_max;
+                l_max = A[i];
             }
 			else
-				l[i] = max;
+				l[i] = l_max;
+			
+			if(r_max < A[n-i-1])
+            {
+                r[n-i-1] = r_max;
+                r_max = A[n-i-1];
+            }
+			else
+				r[n-i-1] = r_max;
         }
         
-        max = A[n-1];
+       
 		
         for(int i=n-2; i>=0; i--)
         {
-            if(max < A[i])
-            {
-                r[i] = max;
-                max = A[i];
-            }
-			else
-				r[i] = max;
+           
         }
         
         
