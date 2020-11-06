@@ -1,70 +1,81 @@
 import static java.lang.System.*;
 import java.util.*;
 
-public class NQeensProblem
+public class NQueenProblem 
 {
-	static void printSolution(int board[][], int n)
-	{
-		for(int i=0;i<n; i++)
-		{
-			for(int j=0;j<n; j++)
-				out.print(" "+board[i][j]+"  ");
-			out.println("\n");
-		}
+	static List<char[]> mList;
+	static List<List<String>> list = new ArrayList<List<String>>();
+	
+	public static void main(String [] args)
+	{       
+	    int n = 4;
+		mList  = new ArrayList<>();
 		
-		out.println("\n------------------------");
+		for(int i=0;i<n; i++)
+        {
+           char ch[] = new char[n];
+           Arrays.fill(ch, '.');
+           mList.add(ch); 
+        }    
+        
+		placeTheQueen(0,n);
+		printList(n);
 	}
 	
-	static boolean isSafe(int board[][], int row, int col, int n)
+	static boolean placeTheQueen(int col, int n)
+	{
+		if(col==n)
+		{
+			List<String> temp = new ArrayList<>();
+			for(int i=0;i<n; i++)
+				temp.add(String.valueOf(mList.get(i)));
+			list.add(temp);
+			return true;
+		}
+			
+		boolean res = false;
+		
+		for(int i=0; i<n; i++)
+		{
+			if(isSafe(i,col,n))
+			{
+				mList.get(i)[col] = 'Q';
+		        res = placeTheQueen(col+1,n) || res;
+				mList.get(i)[col] = '.';
+			}
+		}
+		return res;
+ 	}
+	
+	static boolean isSafe(int row, int col, int n)
 	{
 		// check left side in the row
 		for(int i=0; i<col; i++)
-			if(board[row][i] == 1)
+			if(mList.get(row)[i] == 'Q')
 				return false;
 		
 		// check upper diagonal
 		for(int i=row, j=col; i>=0 && j>=0 ; i--,j--)
-			if(board[i][j] == 1)
+			if(mList.get(i)[j] == 'Q')
 				return false;
 		
        // lower diagonal
-
        for(int i=row, j=col; i<n && j>=0; i++,j--)	
-		if(board[i][j] == 1)
+		if(mList.get(i)[j] == 'Q')
 			return false;
 		
 	   return true;		
 	}
 	
-	static boolean placeTheQueen(int board[][], int col, int n)
+	static void printList(int n)
 	{
-		boolean res = false; 
-		
-		if(col==n)
+		for(int i=0; i<list.size(); i++)
 		{
-			printSolution(board, n);
-			return true;
-		}
-						
-		for(int i=0; i<n; i++)
-		{
-			if(isSafe(board,i,col,n))
+		    for(String x: list.get(i))
 			{
-				board[i][col] = 1;
-				res = placeTheQueen(board,col+1,n);
-				board[i][col] = 0;
+				out.println(x);
 			}
+			out.println("\n");
 		}
-		return res;
 	}
-	
-	public static void main(String [] args)
-	{
-	   Scanner sc = new Scanner(in);
-	   int n = sc.nextInt();	
-	   int board[][] = new int [n][n];
-		
-       boolean status = placeTheQueen(board,0,n);	
-       out.print(status);	   
-	}
-}
+ }
